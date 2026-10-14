@@ -1,0 +1,24 @@
+vector_store:
+  default: faiss
+  alternatives:
+    - qdrant
+  modular: true
+
+embedding:
+  model: sentence-transformers/all-MiniLM-L6-v2
+
+pipeline:
+  - embed_query
+  - retrieve
+  - optional_rerank
+  - llm_with_citations
+
+sources_allowed:
+  - project_documentation
+  - uploaded_research_pdfs
+  - clinical_guidelines_user_provided
+  - pubmed_where_legally_available
+
+citation_required: true
+invent_sources: false
+knowledge_root: data/knowledge

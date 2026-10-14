@@ -1,0 +1,33 @@
+# Differential privacy via Opacus (PyTorch). This is a privacy mechanism,
+# not a claim of perfect privacy. Always report the utility tradeoff.
+
+differential_privacy:
+  enabled: false
+  library: opacus
+  epsilon_target: 8.0
+  delta: 1.0e-5
+  max_grad_norm: 1.0
+  noise_multiplier: 1.0
+  accountants:
+    - rdp
+  experiments:
+    - name: no_dp
+      enabled: false
+    - name: low_noise
+      noise_multiplier: 0.5
+    - name: higher_noise
+      noise_multiplier: 1.5
+
+communication:
+  api_tls: required_in_production
+  store_encryption: application_level_for_sensitive_fields
+  transmit_raw_images_to_fl_server: false
+
+audit:
+  enabled: true
+  retain_days: 365
+
+retention:
+  central_raw_images: never
+  case_metadata: configurable
+  model_updates: ephemeral_or_research_logs_only

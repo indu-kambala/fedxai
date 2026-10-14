@@ -1,0 +1,107 @@
+# Configurable chest X-ray dataset. Do not hard-code the final hospital corpus.
+# Additional medically meaningful classes can be added without architecture changes.
+# Raw patient images MUST remain on hospital/client storage. The central FL
+# server never ingests these paths for aggregation.
+
+task:
+  name: chest_xray_multiclass
+  modality: chest_xray
+  clinical_use: decision_support_research_prototype
+  not_a_diagnosis: true
+
+classes:
+  names:
+    - NORMAL
+    - PNEUMONIA
+    - COVID-19
+  # Extra medically meaningful labels may be appended later.
+  extensible: true
+
+image:
+  size: 224
+  channels: 3  # grayscale CXR is replicated to 3 channels for pretrained backbones
+  supported_formats:
+    - png
+    - jpg
+    - jpeg
+    - dcm
+    - dicom
+  grayscale_input: true
+
+splits:
+  train: 0.70
+  validation: 0.15
+  test: 0.15
+  strategy: hospital_aware_then_patient_aware
+  # Split BEFORE any augmentation. Never use test images for tuning,
+  # synthetic generation, or model selection.
+  augment_before_split: false
+  prevent_patient_leakage: true
+  notes: >
+    If patient identifiers exist, all studies from one patient stay in a
+    single split. Hospital-level isolation is preserved for federated clients.
+
+clients:
+  count: 5
+  names:
+    - Hospital A
+    - Hospital B
+    - Hospital C
+    - Hospital D
+    - Hospital E
+  local_roots:
+    - data/hospital_1
+    - data/hospital_2
+    - data/hospital_3
+    - data/hospital_4
+    - data/hospital_5
+  target_images_per_client: 500
+  target_total_images: 2500
+  # Placeholders only. Actual volumes come from validation in Phase 1.
+
+non_iid:
+  enabled: true
+  label_skew: true
+  quantity_skew: true
+  feature_skew: optional
+  profiles:
+    hospital_a: pneumonia_heavy
+    hospital_b: covid_heavy
+    hospital_c: normal_heavy
+    hospital_d: mixed
+    hospital_e: shifted
+
+normalization:
+  method: imagenet
+  mean: [0.485, 0.456, 0.406]
+  std: [0.229, 0.224, 0.225]
+  alternatives:
+    - chestxray_dataset_stats  # computed per training split only, never from test
+
+class_balancing:
+  strategy: weighted_cross_entropy  # one strategy per experiment; do not stack blindly
+  options:
+    - none
+    - weighted_cross_entropy
+    - focal_loss
+    - weighted_sampler
+    - oversampling
+    - synthetic_diffusion_augmentation
+
+augmentation:
+  enabled: true
+  medically_aggressive: false
+  operations:
+    rotation_degrees: 10
+    horizontal_flip: false  # default off; enable only with documented justification
+    brightness: 0.10
+    contrast: 0.10
+    affine_degrees: 5
+    affine_translate: 0.02
+    random_crop_scale: [0.90, 1.00]
+    gaussian_noise_std: 0.01
+  documentation: docs/methodology/augmentations.md
+
+seed: 42
+validation_required_before_training: true
+central_server_receives_raw_images: false

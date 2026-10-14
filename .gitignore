@@ -1,0 +1,61 @@
+# Secrets and local env
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+credentials.json
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Node / frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# ML artifacts (keep structure, ignore weights/runs)
+mlruns/**
+!mlruns/.gitkeep
+*.pt
+*.pth
+*.ckpt
+*.onnx
+*.safetensors
+wandb/
+
+# Data — never commit patient images or hospital dumps
+data/hospital_*/**
+!data/hospital_*/.gitkeep
+!data/hospital_*/README.md
+data/synthetic/**
+!data/synthetic/.gitkeep
+*.dcm
+*.dicom
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Docker volumes
+postgres_data/
+qdrant_storage/

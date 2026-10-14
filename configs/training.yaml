@@ -1,0 +1,40 @@
+optimizer:
+  name: adamw
+  learning_rate: 1.0e-4
+  weight_decay: 1.0e-4
+
+scheduler:
+  name: cosine
+  warmup_epochs: 1
+
+early_stopping:
+  enabled: true
+  monitor: val_macro_f1
+  mode: max
+  patience: 5
+
+runtime:
+  epochs: 10
+  batch_size: 8
+  mixed_precision: false
+  checkpointing: true
+  resumable: true
+  cpu_fallback: true
+  gpu_detection: true
+  small_dev_subset: true
+
+loss:
+  name: weighted_cross_entropy
+  focal_gamma: 2.0
+
+selection_criteria:
+  primary:
+    - macro_f1
+    - roc_auc
+    - sensitivity
+    - specificity
+    - expected_calibration_error
+    - inference_latency_ms
+    - model_size_mb
+  medical_emphasis: per_class_recall_and_sensitivity
+  never_select_on_accuracy_alone: true

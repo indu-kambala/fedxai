@@ -1,0 +1,31 @@
+provider: huggingface
+model: mistralai/Mistral-7B-Instruct-v0.2
+timeout_seconds: 60
+stream: true
+
+guardrails:
+  invent_test_results: false
+  invent_symptoms: false
+  invent_literature: false
+  claim_certainty: false
+  override_physician: false
+  heatmap_proves_disease: false
+  fabricate_confidence: false
+  unsupported_treatment: false
+
+answer_must_separate:
+  - model_output
+  - image_explanation
+  - retrieved_evidence
+  - general_medical_knowledge
+  - uncertainty
+
+fallback:
+  on_api_unavailable: static_grounded_template
+  on_rate_limit: retry_then_fallback
+  on_timeout: fallback
+  never_hallucinate_citations: true
+
+clinical_disclaimer: >
+  AI-assisted decision support for research. Predictions require review by a
+  qualified clinician and are not a medical diagnosis.

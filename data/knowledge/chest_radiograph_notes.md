@@ -1,0 +1,17 @@
+# Chest radiograph decision-support notes (public sources)
+
+This file is a **research knowledge snippet**, not a care protocol.
+
+## Scope
+
+Chest radiographs may appear similar across viral and bacterial pneumonia. Imaging
+must be interpreted with clinical history, vital signs, and laboratory tests.
+FedXAI-Med model output is an AI-assisted research prediction, **not a diagnosis**.
+
+## Public references (titles only; retrieve the original documents yourself)
+
+1. World Health Organization. Use of chest imaging in COVID-19: a rapid advice guide. 2020.
+2. American College of Radiology. ACR Appropriateness Criteria — Acute Respiratory Illness.
+3. WHO. Clinical management of COVID-19: living guideline.
+
+Do not treat heatmaps as proof of disease. Do not invent additional citations.

@@ -1,0 +1,1 @@
+"""Conditional diffusion trainer stub."""

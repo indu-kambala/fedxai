@@ -1,0 +1,38 @@
+# Vision model zoo. No architecture is assumed to be best a priori.
+# Selection uses macro-F1, ROC-AUC, sensitivity, specificity, calibration,
+# and computational cost — not accuracy alone.
+
+backbones:
+  densenet121:
+    family: cnn
+    source: torchvision
+    pretrained: true
+    xai: [gradcam, gradcam_plus_plus, shap_optional]
+  efficientnet_b3:
+    family: cnn
+    source: timm
+    pretrained: true
+    xai: [gradcam, gradcam_plus_plus, shap_optional]
+  vit_b16:
+    family: transformer
+    source: timm
+    pretrained: true
+    xai: [attention_rollout, attention_maps, shap_optional]
+    gradcam_if_technically_valid: optional
+  swin_tiny:
+    family: transformer
+    source: timm
+    pretrained: true
+    xai: [attention_visualization, shap_optional]
+    gradcam_if_technically_valid: optional
+
+transfer_learning:
+  modes:
+    - frozen_backbone
+    - partial_finetune
+    - full_finetune
+
+defaults:
+  name: densenet121
+  pretrained: true
+  dropout: 0.1

@@ -1,0 +1,54 @@
+{
+  "algorithm": "FedProx",
+  "rounds": 1,
+  "local_epochs": 2,
+  "learning_rate": 0.0001,
+  "mu": 0.01,
+  "history": [
+    {
+      "round": 1,
+      "accuracy": 0.7877877877877878,
+      "precision": 0.7974768780084873,
+      "recall": 0.7877877877877878,
+      "f1": 0.7905318740830399,
+      "confusion_matrix": [
+        [
+          257,
+          5,
+          45
+        ],
+        [
+          5,
+          249,
+          80
+        ],
+        [
+          11,
+          66,
+          281
+        ]
+      ],
+      "per_class": {
+        "COVID-19": {
+          "precision": 0.9413919413919414,
+          "recall": 0.8371335504885994,
+          "f1_score": 0.8862068965517241,
+          "support": 307
+        },
+        "NORMAL": {
+          "precision": 0.778125,
+          "recall": 0.7455089820359282,
+          "f1_score": 0.7614678899082569,
+          "support": 334
+        },
+        "PNEUMONIA": {
+          "precision": 0.6921182266009852,
+          "recall": 0.7849162011173184,
+          "f1_score": 0.7356020942408377,
+          "support": 358
+        }
+      }
+    }
+  ],
+  "training_time_seconds": 621.596279800011
+}

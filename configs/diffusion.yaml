@@ -1,0 +1,42 @@
+# MedFusion-inspired diffusion augmentation.
+# This is NOT a claim that the code is the original MedFusion model unless
+# a faithful reproduction is later wired in as a replaceable backend.
+
+module:
+  name: medfusion_inspired
+  claim_original_medfusion: false
+  backends:
+    - placeholder
+    - pretrained_conditional_diffusion  # replaceable
+    - original_medfusion_if_faithfully_reproduced
+
+use_cases:
+  - class_balancing
+  - rare_class_augmentation
+  - synthetic_data_experiments
+  - robustness_analysis
+
+generation:
+  condition_on: class_label
+  output: synthetic_chest_xray
+  never_train_on_test_split: true
+  never_generate_from_test_images: true
+
+quality_checks:
+  duplicate_detection: true
+  similarity_checking: true
+  artifact_inspection: true
+  classifier_confidence_analysis: true
+
+experiments:
+  A: real_only
+  B: real_plus_conventional_augmentation
+  C: real_plus_diffusion_synthetic
+
+evaluate_if_improves:
+  - macro_f1
+  - sensitivity
+  - specificity
+  - roc_auc
+  - minority_class_recall
+assume_improvement: false

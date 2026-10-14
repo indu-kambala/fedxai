@@ -1,0 +1,52 @@
+# Flower-based simulation of five hospital clients.
+# Aggregation receives model updates only — never raw CXR pixels.
+
+server:
+  address: 0.0.0.0:8080
+  num_rounds: 10
+  min_fit_clients: 5
+  min_available_clients: 5
+  fraction_fit: 1.0
+
+algorithms:
+  default: fedavg
+  supported:
+    - centralized  # research baseline; not a production data-sharing mode
+    - fedavg
+    - fedprox
+
+fedprox:
+  mu: 0.01
+
+clients:
+  - id: hospital_a
+    name: Hospital A
+    data_root: data/hospital_1
+  - id: hospital_b
+    name: Hospital B
+    data_root: data/hospital_2
+  - id: hospital_c
+    name: Hospital C
+    data_root: data/hospital_3
+  - id: hospital_d
+    name: Hospital D
+    data_root: data/hospital_4
+  - id: hospital_e
+    name: Hospital E
+    data_root: data/hospital_5
+
+local:
+  epochs: 1
+  batch_size: 8
+
+metrics_per_round:
+  - client_participation
+  - local_loss
+  - local_metrics
+  - global_metrics
+  - communication_time_s
+  - model_update_size_bytes
+  - convergence
+  - client_drift
+
+raw_images_on_wire: false

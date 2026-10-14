@@ -1,0 +1,11 @@
+{
+  "name": "fedxai-med",
+  "private": true,
+  "version": "0.0.1",
+  "description": "FedXAI-Med monorepo. Frontend lives in /frontend. Research prototype; not a diagnosis system.",
+  "scripts": {
+    "test:backend": "python -m pytest tests -q",
+    "frontend:dev": "npm --prefix frontend run dev",
+    "frontend:build": "npm --prefix frontend run build"
+  }
+}

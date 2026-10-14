@@ -1,0 +1,57 @@
+# Ablation matrix. Results must be measured, never fabricated.
+# Unrun experiments MUST display "Not evaluated".
+
+tracking:
+  backend: mlflow
+  record:
+    - experiment_id
+    - model
+    - dataset_version
+    - hospital_configuration
+    - hyperparameters
+    - augmentation
+    - diffusion_augmentation
+    - fl_algorithm
+    - dp_settings
+    - metrics
+    - checkpoint_path
+    - timestamp
+    - git_commit
+
+matrix:
+  - id: exp01
+    name: Baseline CNN
+    status: not_evaluated
+  - id: exp02
+    name: Transfer learning
+    status: not_evaluated
+  - id: exp03
+    name: ViT
+    status: not_evaluated
+  - id: exp04
+    name: Swin
+    status: not_evaluated
+  - id: exp05
+    name: Best model + conventional augmentation
+    status: not_evaluated
+  - id: exp06
+    name: Best model + diffusion augmentation
+    status: not_evaluated
+  - id: exp07
+    name: Centralized training
+    status: not_evaluated
+  - id: exp08
+    name: FedAvg
+    status: not_evaluated
+  - id: exp09
+    name: FedProx
+    status: not_evaluated
+  - id: exp10
+    name: FedProx + Differential Privacy
+    status: not_evaluated
+  - id: exp11
+    name: FedProx + DP + diffusion augmentation
+    status: not_evaluated
+
+metrics_never_invented: true
+unrun_display: Not evaluated

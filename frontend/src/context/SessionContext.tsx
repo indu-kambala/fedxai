@@ -1,3 +1,4 @@
+
 import {
   createContext,
   useCallback,
@@ -37,6 +38,7 @@ const SessionContext = createContext<{
   setHospital: (id: string) => void;
   setModel: (id: string) => void;
   addCase: (record: CaseRecord) => void;
+  updateCase: (id: string, updates: Partial<CaseRecord>) => void;
   setActiveCase: (id: string | null) => void;
   activeCase: CaseRecord | null;
   addMessage: (message: ChatMessage) => void;
@@ -64,17 +66,22 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const signedIn = Boolean(session.name);
 
   const value = useMemo(() => {
-    const activeCase = session.cases.find((c) => c.id === session.activeCaseId) ?? null;
+    const activeCase =
+      session.cases.find((c) => c.id === session.activeCaseId) ?? null;
+
     return {
       session,
       signedIn,
-      signIn: (name: string, role: Role) => persist({ ...session, name, role }),
+      signIn: (name: string, role: Role) =>
+        persist({ ...session, name, role }),
       signOut: () => {
         sessionStorage.removeItem("fedxai-session");
         setSession(defaultSession);
       },
-      setHospital: (hospitalId: string) => persist({ ...session, hospitalId }),
-      setModel: (modelId: string) => persist({ ...session, modelId }),
+      setHospital: (hospitalId: string) =>
+        persist({ ...session, hospitalId }),
+      setModel: (modelId: string) =>
+        persist({ ...session, modelId }),
       addCase: (record: CaseRecord) =>
         persist({
           ...session,
@@ -82,15 +89,30 @@ export function SessionProvider({ children }: { children: ReactNode }) {
           activeCaseId: record.id,
           messages: [],
         }),
-      setActiveCase: (id: string | null) => persist({ ...session, activeCaseId: id, messages: [] }),
+      updateCase: (id: string, updates: Partial<CaseRecord>) =>
+        persist({
+          ...session,
+          cases: session.cases.map((record) =>
+            record.id === id ? { ...record, ...updates } : record
+          ),
+        }),
+      setActiveCase: (id: string | null) =>
+        persist({ ...session, activeCaseId: id, messages: [] }),
       activeCase,
       addMessage: (message: ChatMessage) =>
-        persist({ ...session, messages: [...session.messages, message] }),
+        persist({
+          ...session,
+          messages: [...session.messages, message],
+        }),
       clearMessages: () => persist({ ...session, messages: [] }),
     };
   }, [persist, session, signedIn]);
 
-  return <SessionContext.Provider value={value}>{children}</SessionContext.Provider>;
+  return (
+    <SessionContext.Provider value={value}>
+      {children}
+    </SessionContext.Provider>
+  );
 }
 
 export function useSession() {
